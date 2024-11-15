@@ -14,13 +14,13 @@ Docker and local development options.
 1. Clone the repository:
 
 ```bash
-git clone https://gitlab.com/pacifiquenyiringango1998/panafrican-admin-front.git
+git clone https://gitlab.com/pacifiquenyiringango1998/panafrican-frontend.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd panafrican-admin-front
+cd panafrican-frontend
 ```
 
 ## Quick Start
@@ -193,7 +193,7 @@ npm run build -- --force
 ## Project Structure
 
 ```
-panafrican-admin-front/
+panafrican-frontend/
 ├── src/
 │   ├── components/     # UI components
 │   ├── features/       # Redux slices
