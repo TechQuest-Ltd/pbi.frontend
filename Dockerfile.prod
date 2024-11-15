@@ -1,0 +1,27 @@
+FROM node:18-alpine AS builder
+
+# Set metadata
+LABEL maintainer="dev@techquestltd.com"
+LABEL version="1.0"
+LABEL description="Production image for Pan-African application"
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json to install dependencies
+COPY package*.json ./
+
+# Install dependencies and build the app
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Use Nginx for serving the build folder in production
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Expose port for the production server
+EXPOSE 80
+
+# Command to start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
