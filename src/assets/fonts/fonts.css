@@ -1,0 +1,107 @@
+/* HostGrotesk-Bold.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* HostGrotesk-BoldItalic.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* HostGrotesk-ExtraBold.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* HostGrotesk-ExtraBoldItalic.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* HostGrotesk-Italic.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* HostGrotesk-Light.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* HostGrotesk-LightItalic.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* HostGrotesk-Medium.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* HostGrotesk-MediumItalic.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* HostGrotesk-Regular.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* HostGrotesk-SemiBold.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* HostGrotesk-SemiBoldItalic.ttf */
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('./HostGrotesk-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}

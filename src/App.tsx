@@ -4,6 +4,8 @@ import routes from './routes';
 import { toast } from 'sonner';
 import AuthGuard from './authGuard';
 import { getNetworkStatus } from './lib/utils';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(getNetworkStatus());
@@ -45,6 +47,7 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop />
+      <Navbar />
       <Routes>
         {routes.map(route =>
           route.authRequired ? (
@@ -56,6 +59,7 @@ const App = () => {
           )
         )}
       </Routes>
+      <Footer />
     </Router>
   );
 };

@@ -1,0 +1,12 @@
+export { default as logo } from './images/logo.png';
+export { default as linkedIn } from './icons/linkedIn.png';
+export { default as users } from './icons/users.png';
+export { default as profile } from './icons/profile.png';
+export { default as message } from './icons/message.png';
+export { default as home1 } from './images/home1.png';
+export { default as home2 } from './images/home2.png';
+export { default as home3 } from './images/home3.png';
+export { default as home4 } from './images/home4.png';
+export { default as home5 } from './images/home5.png';
+export { default as mobile } from './images/mobile.png';
+export { default as match } from './images/match.png';
