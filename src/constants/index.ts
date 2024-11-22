@@ -1,4 +1,4 @@
-import { home1, home2, home3, home4, home5 } from "@/assets";
+import { home1, home2, home3, home4, home5 } from '@/assets';
 
 export const navItems = [
   {
@@ -51,17 +51,17 @@ export const CURRENCY_STORAGE_KEY = 'panafrica_preferredCurrency';
 
 export const images = [
   {
-    src: {home1},
+    src: { home1 },
     alt: 'Professional with glasses',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: {home2},
+    src: { home2 },
     alt: 'Graduate in cap and gown',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: {home3},
+    src: { home3 },
     alt: 'Professional presenting',
     className: 'col-span-1 row-span-1',
   },

@@ -3,8 +3,8 @@ import HowItWorksCard from '@/components/HowItWorksCard';
 
 function HowItWorks() {
   return (
-    <section className='max-w-6xl mx-auto'>
-      <div className='flex items-center justify-between py-4 px-6'>
+    <section className='max-w-6xl mx-auto px-4 py-8'>
+      <div className='flex flex-col md:grid md:grid-cols-3 gap-4'>
         <HowItWorksCard
           icon={profile}
           title='Create Your Profile'

@@ -13,9 +13,7 @@ const CallToAction = () => {
           <p className='text-lg text-gray-800'>
             Join thousands of professionals who have already found their career connections
           </p>
-          <Button className=''>
-            Create Your Profile
-          </Button>
+          <Button className=''>Create Your Profile</Button>
         </div>
 
         {/* Right column with image */}
