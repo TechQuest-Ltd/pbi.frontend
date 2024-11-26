@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className='w-full bg-primary text-muted py-12'>
+    <footer className='w-full bg-primary text-muted pt-12'>
       <div className='max-w-6xl mx-auto px-6'>
         <div className='grid grid-cols-2 md:grid-cols-4 gap-8'>
           {Object.entries(footerLinks).map(([category, links]) => (
@@ -63,10 +63,11 @@ const Footer: React.FC = () => {
 
         <div className='flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0'>
           <div className='text-sm text-mutedForeground '>
-            &copy; {new Date().getFullYear()} PANAFRICA BUSINESS. All rights reserved.
+            &copy; {new Date().getFullYear()} PANAFRICA BUSINESS INITIATIVE. All rights reserved.
           </div>
         </div>
       </div>
+      <div className='bg-custom-gradient h-2 mt-5'></div>
     </footer>
   );
 };

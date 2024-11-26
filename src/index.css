@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .bg-custom-gradient {
+    background: linear-gradient(160deg, #EDBA2B, #FF00B3);
+  }
+}
 
 body {
   @apply font-body text-primary bg-background;

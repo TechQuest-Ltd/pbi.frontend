@@ -57,11 +57,11 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className='bg-white/10 fixed left-0 right-0 z-50 backdrop-blur-md'>
-      <div className='max-w-6xl mx-auto flex items-center justify-between py-4 px-6'>
+      <div className='max-w-6xl mx-auto flex items-center justify-between px-6'>
         {/* Logo Section */}
         <div className='flex items-center space-x-10'>
           <Link to='/' className='flex-shrink-0'>
-            <img src={logo} alt='Company Logo' className='h-14 w-auto' data-testid='navbar-logo' />
+            <img src={logo} alt='Company Logo' className='h-[100px] w-auto' data-testid='navbar-logo' />
           </Link>
 
           {/* Desktop Navigation */}

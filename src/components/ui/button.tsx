@@ -11,8 +11,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          'bg-[linear-gradient(160deg,#EDBA2B,#FF00B3)] text-white text-center py-4 rounded-md shadow-md flex items-center justify-center',
+        default: 'bg-custom-gradient text-white text-center py-4 rounded-md shadow-md flex items-center justify-center',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline: 'border border-input bg-background hover:bg-accent/10 hover:text-accent-foreground',
         secondary: 'bg-secondary/10 text-secondary hover:bg-secondary/20',
