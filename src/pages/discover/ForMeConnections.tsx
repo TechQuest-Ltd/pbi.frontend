@@ -1,7 +1,5 @@
 const ForMeConnections = () => {
-  return (
-    <div>ForMeConnections</div>
-  )
-}
+  return <div>ForMeConnections</div>;
+};
 
-export default ForMeConnections
+export default ForMeConnections;

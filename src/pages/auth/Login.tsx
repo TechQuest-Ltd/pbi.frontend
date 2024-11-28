@@ -31,7 +31,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     // If the user is already logged in, redirect to the dashboard
     if (user) {
-      navigate('/');
+      navigate('/discover');
     }
   }, [user, navigate]);
 
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     try {
       const res = await loginMutation(data).unwrap();
       if (res.success) {
-        dispatch(setCredentials(res.token));
+        dispatch(setCredentials(res.data.tokens.accessToken));
         navigate('/discover');
       }
     } catch (error) {

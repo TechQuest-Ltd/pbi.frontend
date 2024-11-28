@@ -20,7 +20,7 @@ const routes: RouteObject[] = [
   { path: '/connect', element: <ConnectPage /> },
   { path: '/collaborate', element: <CollaboratePage /> },
   { path: '/profession', element: <ProfessionPage /> },
-  { path: '/discover', element: <DiscoverPage /> },
+  { path: '/discover', element: <DiscoverPage />, authRequired: true },
   { path: '*', element: <NotFoundPage /> },
 ];
 

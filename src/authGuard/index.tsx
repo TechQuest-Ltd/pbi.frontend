@@ -1,10 +1,10 @@
+import { useAuth } from '@/hooks/useAuth';
 import { Outlet, Navigate } from 'react-router-dom';
 
 const AuthGuard = () => {
-  // TODO: Replace with real auth check later
-  const userToken = true; // temporary auth check
+  const { user } = useAuth();
 
-  return userToken ? <Outlet /> : <Navigate to='/' replace />;
+  return user ? <Outlet /> : <Navigate to='/login' replace />;
 };
 
 export default AuthGuard;

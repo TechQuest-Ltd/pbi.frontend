@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Menu, Search, Globe, Users, Compass, Keyboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -20,6 +21,8 @@ import AllConnections from './AllConnections';
 import ForMeConnections from './ForMeConnections';
 import DiscoverConnections from './DiscoverConnections';
 
+import { logout } from '@/redux/reducers/authSlice';
+
 const DiscoverHeader = () => {
   const [activeTab, setActiveTab] = useState(localStorage.getItem('panafrica-filter') || 'All');
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,6 +30,7 @@ const DiscoverHeader = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleNavigation = (link: string) => {
     navigate(link);
@@ -50,6 +54,11 @@ const DiscoverHeader = () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logout(user?.token));
+    navigate('/login');
+  };
 
   return (
     <>
@@ -139,7 +148,7 @@ const DiscoverHeader = () => {
                 Account Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {}}>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -26,7 +26,7 @@ const CreateAccount: React.FC = () => {
   const onSubmit: SubmitHandler<SignUpFormInputs> = async ({ first_name, last_name, email, phoneNumber, password }) => {
     try {
       const res = await createUser({ first_name, last_name, email, phoneNumber, password, age: 0 }).unwrap();
-      console.log(res)
+      console.log(res);
       if (res.success) {
         toast.success(res?.message);
         navigate('/login');
