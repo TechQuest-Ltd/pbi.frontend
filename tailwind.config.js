@@ -17,13 +17,13 @@ const config = {
       ...colors,
       primary: '#141B34', 
       secondary: '#edba2b',
-      background: '#FAF8FF',
+      background: '#FAF8FF', 
       muted: '#898989',
       mutedForeground: '#E4E4E7',
       dark: '#000000',
       white: '#ffffff',
       accent: '#FF00B3',
-      error: ''
+      error: '#FF0000'
     },
     container: {
       center: true,

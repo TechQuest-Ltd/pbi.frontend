@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { linkedIn } from '@/assets';
 import { useState } from 'react';
 import { handleError } from '@/lib/utils';
+import { useCreateUserMutation } from '@/redux/api/apiSlice';
+import { toast } from 'sonner';
 
 const CreateAccount: React.FC = () => {
   const {
@@ -17,11 +19,18 @@ const CreateAccount: React.FC = () => {
   } = useForm<SignUpFormInputs>();
   const [showPassword, setShowPassword] = useState(false);
 
+  const [createUser, { isLoading }] = useCreateUserMutation();
+
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<SignUpFormInputs> = async data => {
+  const onSubmit: SubmitHandler<SignUpFormInputs> = async ({ first_name, last_name, email, phoneNumber, password }) => {
     try {
-      console.log(data);
+      const res = await createUser({ first_name, last_name, email, phoneNumber, password, age: 0 }).unwrap();
+      console.log(res)
+      if (res.success) {
+        toast.success(res?.message);
+        navigate('/login');
+      }
     } catch (error) {
       handleError(error);
     }
@@ -71,27 +80,27 @@ const CreateAccount: React.FC = () => {
               <form className='space-y-3' onSubmit={handleSubmit(onSubmit)}>
                 <div>
                   <Input
-                    id='firstName'
+                    id='first_name'
                     type='text'
-                    {...register('firstName', {
+                    {...register('first_name', {
                       required: 'First Name is required',
                     })}
                     className='mt-1 px-4 py-5'
                     placeholder='First Name'
                   />
-                  {errors.firstName && <p className='mt-2 text-sm text-red-600'>{errors.firstName.message}</p>}
+                  {errors.first_name && <p className='mt-2 text-sm text-red-600'>{errors.first_name.message}</p>}
                 </div>
                 <div>
                   <Input
-                    id='lastName'
+                    id='last_name'
                     type='text'
-                    {...register('lastName', {
+                    {...register('last_name', {
                       required: 'Last Name is required',
                     })}
                     className='mt-1 px-4 py-5'
                     placeholder='Last Name'
                   />
-                  {errors.lastName && <p className='mt-2 text-sm text-red-600'>{errors.lastName.message}</p>}
+                  {errors.last_name && <p className='mt-2 text-sm text-red-600'>{errors.last_name.message}</p>}
                 </div>
                 <div>
                   <Input
@@ -162,7 +171,7 @@ const CreateAccount: React.FC = () => {
                   </label>
                 </div>
 
-                <Button type='submit' className='w-full'>
+                <Button type='submit' className='w-full' isLoading={isLoading} loadingText='Continuing'>
                   Continue
                 </Button>
               </form>

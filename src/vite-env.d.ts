@@ -6,13 +6,30 @@ interface RouteObject {
   authRequired?: boolean;
   requiredRoles?: string[];
 }
+
 interface LoginFormInputs {
   email: string;
   password: string;
 }
+
+interface Profile {
+  id: number;
+  name: string;
+  position: string;
+  imageSrc: string;
+}
+
+interface Post {
+  id: number;
+  name: string;
+  time: string;
+  title: string;
+  content: string;
+}
+
 interface SignUpFormInputs {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   phoneNumber: string;
   email: string;
   password: string;

@@ -10,3 +10,8 @@ export { default as home4 } from './images/home4.png';
 export { default as home5 } from './images/home5.png';
 export { default as mobile } from './images/mobile.png';
 export { default as match } from './images/match.png';
+export { default as post } from './icons/post.png';
+export { default as passport } from './images/passport.png';
+export { default as showcase } from './icons/showcase.png';
+export { default as showcaseSample } from './images/showcaseSample.png';
+export { default as reaction } from './icons/reaction.png';

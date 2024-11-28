@@ -7,6 +7,7 @@ import {
   CreateAccountPage,
   ProfessionPage,
   ResetPasswordPage,
+  DiscoverPage,
   NotFoundPage,
 } from '@/pages';
 
@@ -19,6 +20,7 @@ const routes: RouteObject[] = [
   { path: '/connect', element: <ConnectPage /> },
   { path: '/collaborate', element: <CollaboratePage /> },
   { path: '/profession', element: <ProfessionPage /> },
+  { path: '/discover', element: <DiscoverPage /> },
   { path: '*', element: <NotFoundPage /> },
 ];
 

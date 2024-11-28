@@ -6,8 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { linkedIn } from '@/assets';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { handleError } from '@/lib/utils';
+import { useDispatch } from 'react-redux';
+import { useAuth } from '@/hooks/useAuth';
+
+import { useLoginMutation } from '@/redux/api/apiSlice';
+import { setCredentials } from '@/redux/reducers/authSlice';
 
 const Login: React.FC = () => {
   const {
@@ -16,12 +21,27 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm<LoginFormInputs>();
   const [showPassword, setShowPassword] = useState(false);
+  const { user } = useAuth();
+
+  const [loginMutation, { isLoading }] = useLoginMutation();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // If the user is already logged in, redirect to the dashboard
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
     try {
-      console.log(data);
+      const res = await loginMutation(data).unwrap();
+      if (res.success) {
+        dispatch(setCredentials(res.token));
+        navigate('/discover');
+      }
     } catch (error) {
       handleError(error);
     }
@@ -122,7 +142,7 @@ const Login: React.FC = () => {
                   </label>
                 </div>
 
-                <Button type='submit' className='w-full'>
+                <Button type='submit' className='w-full' isLoading={isLoading} loadingText='Continuing'>
                   Continue
                 </Button>
 

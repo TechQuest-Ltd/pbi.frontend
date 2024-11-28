@@ -12,9 +12,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-custom-gradient text-white text-center py-4 rounded-md shadow-md flex items-center justify-center',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:bg-accent/10 hover:text-accent-foreground',
-        secondary: 'bg-secondary/10 text-secondary hover:bg-secondary/20',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-md',
+        outline: 'border border-input bg-background hover:bg-accent/10 hover:text-accent-foreground rounded-md',
+        secondary: 'bg-mutedForeground text-primary hover:bg-mutedForeground rounded-md',
         ghost: 'hover:bg-accent/10 hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         transparent: 'bg-transparent text-white hover:bg-white/20',
