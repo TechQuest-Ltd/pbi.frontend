@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { handleError } from '@/lib/utils';
+import { useForgotPasswordMutation } from '@/redux/api/apiSlice';
+import { toast } from 'sonner';
 
 const ForgotPassword: React.FC = () => {
   const {
@@ -12,9 +14,14 @@ const ForgotPassword: React.FC = () => {
     formState: { errors },
   } = useForm<ForgotPasswordInputs>();
 
+  const [forgotPasswordMutation, { isLoading }] = useForgotPasswordMutation();
+
   const onSubmit: SubmitHandler<ForgotPasswordInputs> = async data => {
     try {
-      console.log(data);
+      const res = await forgotPasswordMutation(data).unwrap();
+      if (res.success) {
+        toast.success(res?.message);
+      }
     } catch (error) {
       handleError(error);
     }
@@ -57,7 +64,7 @@ const ForgotPassword: React.FC = () => {
                   {errors.email && <p className='mt-2 text-sm text-red-600'>{errors.email.message}</p>}
                 </div>
 
-                <Button type='submit' className='w-full'>
+                <Button type='submit' className='w-full' isLoading={isLoading} loadingText='Sending Email'>
                   Send Email
                 </Button>
               </form>

@@ -1,23 +1,31 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import { Eye, EyeOff } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { handleError } from '@/lib/utils';
+import { useResetPasswordMutation } from '@/redux/api/apiSlice';
 
 const ResetPassword: React.FC = () => {
+  const { resetToken } = useParams();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ResetPasswordInputs>();
   const [showPassword, setShowPassword] = useState(false);
+  const [resetPasswordMutation, { isLoading }] = useResetPasswordMutation();
 
   const onSubmit: SubmitHandler<ResetPasswordInputs> = async data => {
     try {
-      console.log(data);
+      const res = await resetPasswordMutation({ resetToken, password: data.password }).unwrap();
+      if (res.success) {
+        toast.success(res?.message);
+      }
     } catch (error) {
       handleError(error);
     }
@@ -100,7 +108,7 @@ const ResetPassword: React.FC = () => {
                   )}
                 </div>
 
-                <Button type='submit' className='w-full'>
+                <Button type='submit' className='w-full' isLoading={isLoading} loadingText='Resetting Password'>
                   Reset Password
                 </Button>
               </form>
