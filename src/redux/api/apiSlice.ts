@@ -74,10 +74,10 @@ export const apiSlice = createApi({
 
       // Create User Profile
       createUserProfile: builder.mutation({
-        query: ({ nationality, address, bio, sectors, preferredSectors, id }) => ({
+        query: ({ account_type, picture, nationality, address, bio, sectors, matching_sectors, id }) => ({
           url: `/users/${id}/profile`,
           method: 'POST',
-          body: { nationality, address, bio, sectors, preferredSectors },
+          body: { account_type, picture, nationality, address, bio, sectors, matching_sectors },
         }),
       }),
     };
