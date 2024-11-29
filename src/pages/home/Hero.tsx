@@ -20,7 +20,7 @@ const Hero = () => {
             Grow Together.
           </h1>
           <p className='text-lg text-gray-600 max-w-lg mx-auto lg:mx-0'>
-            Connect with perfect-match businesses and professionals in your industry through AI-powered matching.
+            Ready to connect with African businesses and professionals in your industry through AI-powered matching
           </p>
           <div className='flex flex-col sm:flex-row gap-4 justify-center lg:justify-start'>
             <Button onClick={() => navigate('/create-account')} className='w-full sm:w-auto'>

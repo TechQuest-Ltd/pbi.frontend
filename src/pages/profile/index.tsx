@@ -14,7 +14,7 @@ interface ProfileFormInputs {
   address: string;
   bio: string;
   sectors: { value: number; label: string }[];
-  preferredSectors: { value: number; label: string }[];
+  matching_sectors: { value: number; label: string }[];
 }
 
 const sectorOptions = [
@@ -41,15 +41,27 @@ const CreateProfile: React.FC = () => {
     address,
     bio,
     sectors,
-    preferredSectors,
+    matching_sectors,
   }) => {
     try {
-      const res = await createUserProfile({
+      console.log({
+        account_type: 'Personal',
+        picture: 'https://via.placeholder.com/150',
         nationality,
         address,
         bio,
         sectors: sectors.map(sector => sector.value),
-        matching_sectors: preferredSectors.map(sector => sector.value),
+        matching_sectors: matching_sectors.map(sector => sector.value),
+        id: user?.id,
+      });
+      const res = await createUserProfile({
+        account_type: 'Personal',
+        picture: 'https://via.placeholder.com/150',
+        nationality,
+        address,
+        bio,
+        sectors: sectors.map(sector => sector.value),
+        matching_sectors: matching_sectors.map(sector => sector.value),
         id: user?.id,
       }).unwrap();
 
@@ -153,11 +165,11 @@ const CreateProfile: React.FC = () => {
                 </div>
 
                 <div>
-                  <label htmlFor='preferredSectors' className='block text-sm font-medium text-gray-700'>
+                  <label htmlFor='matching_sectors' className='block text-sm font-medium text-gray-700'>
                     Preferred Matching Sector
                   </label>
                   <Controller
-                    name='preferredSectors'
+                    name='matching_sectors'
                     control={control}
                     rules={{
                       required: 'Please select at least one preferred sector',
@@ -178,8 +190,8 @@ const CreateProfile: React.FC = () => {
                       />
                     )}
                   />
-                  {errors.preferredSectors && (
-                    <p className='mt-2 text-sm text-red-600'>{errors.preferredSectors.message}</p>
+                  {errors.matching_sectors && (
+                    <p className='mt-2 text-sm text-red-600'>{errors.matching_sectors.message}</p>
                   )}
                 </div>
               </div>
