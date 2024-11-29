@@ -5,8 +5,9 @@ import { toast } from 'sonner';
 
 interface User {
   token: string;
-  fullName: string;
+  name: string;
   role: string;
+  id: string;
 }
 
 export const useAuth = (): { user: User | null } => {
@@ -21,8 +22,9 @@ export const useAuth = (): { user: User | null } => {
     return {
       user: {
         token: userToken,
-        fullName: decodedToken.fullName,
+        name: decodedToken.name,
         role: decodedToken.role,
+        id: decodedToken.id,
       },
     };
   } catch (error) {

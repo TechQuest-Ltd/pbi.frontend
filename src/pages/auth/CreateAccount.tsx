@@ -26,10 +26,9 @@ const CreateAccount: React.FC = () => {
   const onSubmit: SubmitHandler<SignUpFormInputs> = async ({ first_name, last_name, email, phoneNumber, password }) => {
     try {
       const res = await createUser({ first_name, last_name, email, phoneNumber, password, age: 0 }).unwrap();
-      console.log(res);
       if (res.success) {
         toast.success(res?.message);
-        navigate('/login');
+        navigate('/account-creation-confirmation');
       }
     } catch (error) {
       handleError(error);
@@ -110,7 +109,7 @@ const CreateAccount: React.FC = () => {
                       required: 'First Name is required',
                     })}
                     className='mt-1 px-4 py-5'
-                    placeholder='Phone Number'
+                    placeholder='Phone Number e.g +250 7xx xxx xxx'
                   />
                   {errors.phoneNumber && <p className='mt-2 text-sm text-red-600'>{errors.phoneNumber.message}</p>}
                 </div>

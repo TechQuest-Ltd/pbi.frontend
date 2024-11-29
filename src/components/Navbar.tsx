@@ -1,19 +1,35 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { logo } from '@/assets';
 import FranceFlag from './FranceFlag';
 import USAFlag from './USAFlag';
 import { hideNavbarRoutes, navItems } from '@/constants';
+import { useAuth } from '@/hooks/useAuth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
+import { logout } from '@/redux/reducers/authSlice';
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'fr'>('en');
+  const { user } = useAuth();
+
+  console.log(user);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Handle Language change
   const handleLanguageChange = (value: 'en' | 'fr') => {
@@ -55,6 +71,13 @@ const Navbar: React.FC = () => {
     return null;
   }
 
+  const handleLogout = () => {
+    if (user?.token) {
+      dispatch(logout());
+    }
+    navigate('/login');
+  };
+
   return (
     <nav className='bg-white/10 fixed left-0 right-0 z-50 backdrop-blur-md'>
       <div className='max-w-6xl mx-auto flex items-center justify-between px-6'>
@@ -70,16 +93,40 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Right Section */}
         <div className='hidden lg:flex items-center space-x-6'>
-          <Link
-            to='/login'
-            className='flex items-center text-base font-medium text-black hover:text-gray-600'
-            data-testid='login-link'
-          >
-            Login
-            <ArrowRight className='ml-2 h-4 w-4' />
-          </Link>
+          {user ? (
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <Avatar className='bg-[#e2e2e2] cursor-pointer'>
+                  <AvatarFallback>{user?.name[0] || 'U'}</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end' className='w-[200px] '>
+                <DropdownMenuLabel className='flex items-center'>
+                  <Avatar>
+                    <AvatarFallback>{user?.name[0] || 'U'}</AvatarFallback>
+                  </Avatar>
+                  <p className='pl-2'>{user?.name || 'User'} 👋🏽</p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => {}}>Account Settings</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Link
+                to='/login'
+                className='flex items-center text-base font-medium text-black hover:text-gray-600'
+                data-testid='login-link'
+              >
+                Login
+                <ArrowRight className='ml-2 h-4 w-4' />
+              </Link>
 
-          <Button onClick={() => navigate('create-account')}>Get Started</Button>
+              <Button onClick={() => navigate('create-account')}>Get Started</Button>
+            </>
+          )}
 
           {/* Language Selector */}
           <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
@@ -132,20 +179,41 @@ const Navbar: React.FC = () => {
             </SelectContent>
           </Select>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className='text-gray-800'
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label='Toggle navigation'
-            data-testid='mobile-menu-toggle'
-          >
-            {isMobileMenuOpen ? <X className='h-6 w-6' /> : <Menu className='h-6 w-6' />}
-          </button>
+          {user ? (
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <Avatar className='bg-[#e2e2e2] cursor-pointer'>
+                  <AvatarFallback>{user?.name[0] || 'U'}</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end' className='w-[200px] '>
+                <DropdownMenuLabel className='flex items-center'>
+                  <Avatar>
+                    <AvatarFallback>{user?.name[0] || 'U'}</AvatarFallback>
+                  </Avatar>
+                  <p className='pl-2'>{user?.name || 'User'} 👋🏽</p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => {}}>Account Settings</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <button
+              className='text-gray-800'
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label='Toggle navigation'
+              data-testid='mobile-menu-toggle'
+            >
+              {isMobileMenuOpen ? <X className='h-6 w-6' /> : <Menu className='h-6 w-6' />}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
+      {!user && isMobileMenuOpen && (
         <div className='lg:hidden bg-white shadow-md'>
           <div className='flex flex-col items-start space-y-4 px-6 py-4'>
             {navItems.map(item => renderNavLink(item, true))}

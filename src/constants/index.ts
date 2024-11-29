@@ -44,8 +44,16 @@ export const footerLinks = {
 };
 
 // routes
-export const hideNavbarRoutes = ['/discover'];
-export const hideFooterRoutes = ['/login', '/forgot-password', '/reset-password', '/create-account', '/discover'];
+export const hideNavbarRoutes = ['/discover', '/account-creation-confirmation', '/email-verification'];
+export const hideFooterRoutes = [
+  '/login',
+  '/forgot-password',
+  '/reset-password',
+  '/create-account',
+  '/discover',
+  '/account-creation-confirmation',
+  '/email-verification',
+];
 
 // local storage constant
 export const CURRENCY_STORAGE_KEY = 'panafrica_preferredCurrency';

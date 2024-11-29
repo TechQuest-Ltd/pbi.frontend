@@ -29,9 +29,14 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // If the user is already logged in, redirect to the dashboard
+    // If the user is already logged in, check profile status
     if (user) {
-      navigate('/discover');
+      const profileSet = localStorage.getItem('profileSet') === 'true';
+      if (profileSet) {
+        navigate('/discover');
+      } else {
+        navigate('/profile');
+      }
     }
   }, [user, navigate]);
 
@@ -40,7 +45,14 @@ const Login: React.FC = () => {
       const res = await loginMutation(data).unwrap();
       if (res.success) {
         dispatch(setCredentials(res.data.tokens.accessToken));
-        navigate('/discover');
+
+        // Check profile status after successful login
+        const profileSet = localStorage.getItem('profileSet') === 'true';
+        if (profileSet) {
+          navigate('/discover');
+        } else {
+          navigate('/profile');
+        }
       }
     } catch (error) {
       handleError(error);

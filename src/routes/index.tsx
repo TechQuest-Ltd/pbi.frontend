@@ -4,17 +4,23 @@ import {
   ForgotPasswordPage,
   HomePage,
   LoginPage,
+  ProfilePage,
   CreateAccountPage,
   ProfessionPage,
   ResetPasswordPage,
   DiscoverPage,
   NotFoundPage,
+  AccountCreatedConfirmationPage,
+  EmailVerificationSuccessPage,
 } from '@/pages';
 
 const routes: RouteObject[] = [
   { path: '/', element: <HomePage /> },
   { path: '/login', element: <LoginPage /> },
+  { path: '/profile', element: <ProfilePage /> },
   { path: '/create-account', element: <CreateAccountPage /> },
+  { path: '/account-creation-confirmation', element: <AccountCreatedConfirmationPage /> },
+  { path: '/email-verification', element: <EmailVerificationSuccessPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/reset-password', element: <ResetPasswordPage /> },
   { path: '/connect', element: <ConnectPage /> },

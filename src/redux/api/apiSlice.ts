@@ -71,9 +71,23 @@ export const apiSlice = createApi({
           body: { password },
         }),
       }),
+
+      // Create User Profile
+      createUserProfile: builder.mutation({
+        query: ({ nationality, address, bio, sectors, preferredSectors, id }) => ({
+          url: `/users/${id}/profile`,
+          method: 'POST',
+          body: { nationality, address, bio, sectors, preferredSectors },
+        }),
+      }),
     };
   },
 });
 
-export const { useLoginMutation, useCreateUserMutation, useForgotPasswordMutation, useResetPasswordMutation } =
-  apiSlice;
+export const {
+  useLoginMutation,
+  useCreateUserMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+  useCreateUserProfileMutation,
+} = apiSlice;

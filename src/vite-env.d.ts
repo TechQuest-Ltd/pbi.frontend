@@ -34,6 +34,13 @@ interface SignUpFormInputs {
   email: string;
   password: string;
 }
+interface ProfileFormInputs {
+  first_name: string;
+  last_name: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
+}
 
 interface ForgotPasswordInputs {
   email: string;

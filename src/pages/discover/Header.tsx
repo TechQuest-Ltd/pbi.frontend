@@ -56,7 +56,9 @@ const DiscoverHeader = () => {
   }, []);
 
   const handleLogout = () => {
-    dispatch(logout(user?.token));
+    if (user?.token) {
+      dispatch(logout());
+    }
     navigate('/login');
   };
 
@@ -133,15 +135,15 @@ const DiscoverHeader = () => {
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Avatar className='bg-[#e2e2e2] cursor-pointer'>
-                <AvatarFallback>{user?.fullName?.[0] || 'U'}</AvatarFallback>
+                <AvatarFallback>{user?.name?.[0] || 'U'}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' className='w-[200px] '>
               <DropdownMenuLabel className='flex items-center'>
                 <Avatar>
-                  <AvatarFallback>{user?.fullName?.[0] || 'U'}</AvatarFallback>
+                  <AvatarFallback>{user?.name?.[0] || 'U'}</AvatarFallback>
                 </Avatar>
-                <p className='pl-2'>{user?.fullName || 'User'} 👋🏽</p>
+                <p className='pl-2'>{user?.name || 'User'} 👋🏽</p>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => handleNavigation('/account-settings')}>
