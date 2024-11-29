@@ -45,7 +45,7 @@ const CreateProfile: React.FC = () => {
   }) => {
     try {
       console.log({
-        account_type: 'Personal',
+        account_type: 'PERSONAL',
         picture: 'https://via.placeholder.com/150',
         nationality,
         address,
@@ -55,7 +55,7 @@ const CreateProfile: React.FC = () => {
         id: user?.id,
       });
       const res = await createUserProfile({
-        account_type: 'Personal',
+        account_type: 'PERSONAL',
         picture: 'https://via.placeholder.com/150',
         nationality,
         address,
