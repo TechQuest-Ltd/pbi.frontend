@@ -13,15 +13,15 @@ interface ProfileFormInputs {
   nationality: string;
   address: string;
   bio: string;
-  sectors: { value: string; label: string }[];
-  preferredSectors: { value: string; label: string }[];
+  sectors: { value: number; label: string }[];
+  preferredSectors: { value: number; label: string }[];
 }
 
 const sectorOptions = [
-  { value: 'Technology', label: 'Technology' },
-  { value: 'Agriculture', label: 'Agriculture' },
-  { value: 'Education', label: 'Education' },
-  { value: 'Healthcare', label: 'Healthcare' },
+  { value: 1, label: 'Technology' },
+  { value: 2, label: 'Agriculture' },
+  { value: 3, label: 'Education' },
+  { value: 4, label: 'Healthcare' },
 ];
 
 const CreateProfile: React.FC = () => {
