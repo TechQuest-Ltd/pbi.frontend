@@ -1,5 +1,5 @@
 export { default as logo } from './images/logo.png';
-export { default as linkedIn } from './icons/linkedIn.png';
+export { default as linkedIn } from './icons/linkedin.png';
 export { default as users } from './icons/users.png';
 export { default as profile } from './icons/profile.png';
 export { default as message } from './icons/message.png';
