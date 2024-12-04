@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { ArrowRight, Eye, EyeOff } from 'lucide-react';
 
@@ -27,28 +27,29 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     // If the user is already logged in, check profile status
     if (user) {
-      const profileSet = localStorage.getItem('profileSet') === 'true';
-      if (profileSet) {
+      if (user && location.pathname !== '/profile') {
         navigate('/discover');
       } else {
         navigate('/profile');
       }
     }
-  }, [user, navigate]);
+  }, [user, navigate, location.pathname]);
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
     try {
       const res = await loginMutation(data).unwrap();
-      if (res.success) {
-        dispatch(setCredentials(res.data.tokens.accessToken));
 
-        // Check profile status after successful login
-        const profileSet = localStorage.getItem('profileSet') === 'true';
-        if (profileSet) {
+      if (res.success) {
+        // Store both access and refresh tokens
+        dispatch(setCredentials(res.data.accessToken));
+
+        // Navigate based on profile completion status
+        if (res.data.profile_completed) {
           navigate('/discover');
         } else {
           navigate('/profile');

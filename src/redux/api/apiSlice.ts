@@ -47,12 +47,28 @@ export const apiSlice = createApi({
         }),
       }),
 
+      // Verify Token
+      verifyToken: builder.query({
+        query: token => ({
+          url: `/auth/verify/${token}`,
+          method: 'GET',
+        }),
+      }),
+
       // Create User
       createUser: builder.mutation({
         query: data => ({
           url: '/auth/signup',
           method: 'POST',
           body: data,
+        }),
+      }),
+
+      // Get User
+      getUser: builder.query({
+        query: id => ({
+          url: `/users/${id}`,
+          method: 'GET',
         }),
       }),
 
@@ -96,9 +112,11 @@ export const apiSlice = createApi({
 
 export const {
   useLoginMutation,
+  useVerifyTokenQuery,
   useCreateUserMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useCreateUserProfileMutation,
   useGetSectorsQuery,
+  useGetUserQuery,
 } = apiSlice;
