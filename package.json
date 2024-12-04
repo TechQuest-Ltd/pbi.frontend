@@ -13,6 +13,7 @@
     "docker:prod": "chmod +x ./start-prod.sh && ./start-prod.sh"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -29,6 +30,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.11.17",
     "jwt-decode": "^4.0.0",
@@ -43,7 +45,8 @@
     "react-select": "^5.8.3",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

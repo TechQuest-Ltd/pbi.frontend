@@ -26,8 +26,6 @@ const Navbar = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'fr'>('en');
   const { user } = useAuth();
 
-  console.log(user);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
