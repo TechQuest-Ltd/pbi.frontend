@@ -13,8 +13,6 @@ interface User {
 export const useAuth = (): { user: User | null } => {
   const { userToken } = useSelector((state: RootState) => state.auth);
 
-  console.log({ userToken });
-
   if (!userToken) {
     return { user: null };
   }

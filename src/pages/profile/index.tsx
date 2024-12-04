@@ -1,14 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
-import { useCreateUserProfileMutation, useGetSectorsQuery } from '@/redux/api/apiSlice';
+import { useCreateUserProfileMutation, useGetSectorsQuery, useGetUserProfileQuery } from '@/redux/api/apiSlice';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { handleError } from '@/lib/utils';
 import customStyles from '@/components/CustomCSSMultiSelect';
+import Spinner from '../../components/Spinner';
 
 // Account type options
 const accountTypeOptions: SelectOption[] = [
@@ -28,11 +29,20 @@ const CreateProfile: React.FC = () => {
     },
   });
 
-  const [createUserProfile, { isLoading: isSubmitting }] = useCreateUserProfileMutation();
-  const { data: sectorsData, isLoading: isLoadingSectors } = useGetSectorsQuery({});
   const { user } = useAuth();
 
+  const [createUserProfile, { isLoading: isSubmitting }] = useCreateUserProfileMutation();
+  const { data: userProfile, isLoading: isLoadingProfile } = useGetUserProfileQuery(user?.id);
+  const { data: sectorsData, isLoading: isLoadingSectors } = useGetSectorsQuery({});
+
   const navigate = useNavigate();
+
+  // Check for existing user profile and redirect if exists
+  useEffect(() => {
+    if (userProfile) {
+      navigate('/discover');
+    }
+  }, [userProfile, navigate]);
 
   // Transform sectors from API to Select options
   const sectorOptions = useMemo<SelectOption[]>(() => {
@@ -61,18 +71,24 @@ const CreateProfile: React.FC = () => {
         matching_sectors: matching_sectors.map(sector => Number(sector.value)),
       };
 
-      console.log(payload);
-
       const res = await createUserProfile(payload).unwrap();
 
       if (res.success) {
         toast.success(res?.message);
-        navigate('/account-creation-confirmation');
+        navigate('/discover');
       }
     } catch (error) {
       handleError(error);
     }
   };
+
+  if (isLoadingProfile) {
+    return (
+      <div className='h-screen flex items-center justify-center'>
+        <Spinner size={30} />
+      </div>
+    );
+  }
 
   return (
     <div className='flex min-h-screen items-center justify-center bg-background'>

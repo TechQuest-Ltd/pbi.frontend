@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useVerifyTokenQuery } from '@/redux/api/apiSlice';
-import { Loader2 } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
@@ -33,7 +33,7 @@ const EmailVerificationSuccess = () => {
     return (
       <div className='flex min-h-screen items-center justify-center bg-background relative overflow-hidden'>
         <div className='text-center'>
-          <Loader2 className='mx-auto animate-spin text-orange-500' size={48} />
+          <LoaderCircle className='mx-auto animate-spin text-secondary' size={30} />
           <p className='mt-4 text-lg text-gray-600'>Verifying email...</p>
         </div>
       </div>

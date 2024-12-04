@@ -99,6 +99,14 @@ export const apiSlice = createApi({
         }),
       }),
 
+      // Get Profile
+      getUserProfile: builder.query({
+        query: id => ({
+          url: `/users/${id}/profile`,
+          method: 'GET',
+        }),
+      }),
+
       // Get Sectors
       getSectors: builder.query({
         query: () => ({
@@ -117,6 +125,7 @@ export const {
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useCreateUserProfileMutation,
+  useGetUserProfileQuery,
   useGetSectorsQuery,
   useGetUserQuery,
 } = apiSlice;

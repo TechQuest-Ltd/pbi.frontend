@@ -17,7 +17,7 @@ import {
 const routes: RouteObject[] = [
   { path: '/', element: <HomePage /> },
   { path: '/login', element: <LoginPage /> },
-  { path: '/profile', element: <ProfilePage /> },
+  { path: '/profile', element: <ProfilePage />, authRequired: true },
   { path: '/create-account', element: <CreateAccountPage /> },
   { path: '/account-creation-confirmation', element: <AccountCreatedConfirmationPage /> },
   { path: '/email-verification/:verificationToken', element: <EmailVerificationSuccessPage /> },

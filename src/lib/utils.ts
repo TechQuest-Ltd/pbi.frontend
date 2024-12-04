@@ -26,7 +26,6 @@ export const handleError = (error: unknown) => {
       duration: 2000,
     });
   } else {
-    console.log(error);
     toast.error('Something went wrong', {
       duration: 2000,
     });

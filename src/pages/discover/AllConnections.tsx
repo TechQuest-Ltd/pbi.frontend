@@ -109,7 +109,7 @@ const AllConnections: React.FC = () => {
   };
 
   return (
-    <main className='space-y-5 relative p-4 md:p-6'>
+    <main className='space-y-5 relative py-16'>
       {/* Profiles Section */}
       <section className='relative group'>
         {/* Left scroll indicator */}

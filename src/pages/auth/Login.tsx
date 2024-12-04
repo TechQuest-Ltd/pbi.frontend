@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { ArrowRight, Eye, EyeOff } from 'lucide-react';
 
@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { linkedIn } from '@/assets';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { handleError } from '@/lib/utils';
 import { useDispatch } from 'react-redux';
-import { useAuth } from '@/hooks/useAuth';
 
 import { useLoginMutation } from '@/redux/api/apiSlice';
 import { setCredentials } from '@/redux/reducers/authSlice';
@@ -21,24 +20,11 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm<LoginFormInputs>();
   const [showPassword, setShowPassword] = useState(false);
-  const { user } = useAuth();
 
   const [loginMutation, { isLoading }] = useLoginMutation();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
-
-  useEffect(() => {
-    // If the user is already logged in, check profile status
-    if (user) {
-      if (user && location.pathname !== '/profile') {
-        navigate('/discover');
-      } else {
-        navigate('/profile');
-      }
-    }
-  }, [user, navigate, location.pathname]);
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
     try {

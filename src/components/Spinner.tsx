@@ -14,7 +14,14 @@ const Spinner: React.FC<SpinnerProps> = ({
   color = 'currentColor',
   ...restProps
 }) => {
-  return <LoaderCircle size={size} className={cn('mr-2 animate-spin', className)} stroke={color} {...restProps} />;
+  return (
+    <LoaderCircle
+      size={size}
+      className={cn('mr-2 text-secondary animate-spin', className)}
+      stroke={color}
+      {...restProps}
+    />
+  );
 };
 
 export default Spinner;
