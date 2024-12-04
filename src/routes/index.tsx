@@ -20,7 +20,7 @@ const routes: RouteObject[] = [
   { path: '/profile', element: <ProfilePage /> },
   { path: '/create-account', element: <CreateAccountPage /> },
   { path: '/account-creation-confirmation', element: <AccountCreatedConfirmationPage /> },
-  { path: '/email-verification', element: <EmailVerificationSuccessPage /> },
+  { path: '/email-verification/:verificationToken', element: <EmailVerificationSuccessPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/reset-password', element: <ResetPasswordPage /> },
   { path: '/connect', element: <ConnectPage /> },
