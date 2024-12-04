@@ -19,7 +19,7 @@ const EmailVerificationSuccess = () => {
   // Effect to handle verification and countdown
   useEffect(() => {
     // Check verification status
-    if (!isSuccess) {
+    if (isSuccess) {
       toast.success('Email Verification Sucessful');
       setVerificationStatus('success');
       navigate('/login');
