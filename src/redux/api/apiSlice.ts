@@ -6,8 +6,10 @@ const baseQuery = fetchBaseQuery({
   baseUrl: VITE_APP_BASE_API_URL,
   prepareHeaders: headers => {
     const token = localStorage.getItem('token');
-    if (token) {
-      headers.set('authorization', `${token}`);
+    // Remove quotes if they exist
+    const cleanToken = token ? token.replace(/^"|"$/g, '') : null;
+    if (cleanToken) {
+      headers.set('authorization', `Bearer ${cleanToken}`);
     }
     return headers;
   },
@@ -80,6 +82,14 @@ export const apiSlice = createApi({
           body: { account_type, picture, nationality, address, bio, sectors, matching_sectors },
         }),
       }),
+
+      // Get Sectors
+      getSectors: builder.query({
+        query: () => ({
+          url: '/sectors',
+          method: 'GET',
+        }),
+      }),
     };
   },
 });
@@ -90,4 +100,5 @@ export const {
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useCreateUserProfileMutation,
+  useGetSectorsQuery,
 } = apiSlice;

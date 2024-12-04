@@ -1,69 +1,69 @@
+import React, { useMemo } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
-import { useCreateUserProfileMutation } from '@/redux/api/apiSlice';
+import { useCreateUserProfileMutation, useGetSectorsQuery } from '@/redux/api/apiSlice';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { handleError } from '@/lib/utils';
+import customStyles from '@/components/CustomCSSMultiSelect';
 
-interface ProfileFormInputs {
-  nationality: string;
-  address: string;
-  bio: string;
-  sectors: { value: number; label: string }[];
-  matching_sectors: { value: number; label: string }[];
-}
-
-const sectorOptions = [
-  { value: 1, label: 'Technology' },
-  { value: 2, label: 'Agriculture' },
-  { value: 3, label: 'Education' },
-  { value: 4, label: 'Healthcare' },
+// Account type options
+const accountTypeOptions: SelectOption[] = [
+  { value: 'PERSONAL', label: 'Personal' },
+  { value: 'COMPANY', label: 'Company' },
 ];
 
 const CreateProfile: React.FC = () => {
   const {
-    register,
     handleSubmit,
     control,
+    register,
     formState: { errors },
-  } = useForm<ProfileFormInputs>();
-  const [createUserProfile, { isLoading }] = useCreateUserProfileMutation();
+  } = useForm<ProfileFormInputs>({
+    defaultValues: {
+      account_type: { value: 'PERSONAL', label: 'Personal' },
+    },
+  });
+
+  const [createUserProfile, { isLoading: isSubmitting }] = useCreateUserProfileMutation();
+  const { data: sectorsData, isLoading: isLoadingSectors } = useGetSectorsQuery({});
   const { user } = useAuth();
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<ProfileFormInputs> = async ({
-    nationality,
-    address,
-    bio,
-    sectors,
-    matching_sectors,
-  }) => {
+  // Transform sectors from API to Select options
+  const sectorOptions = useMemo<SelectOption[]>(() => {
+    if (!sectorsData || !sectorsData.data) return [];
+
+    return sectorsData.data.map((sector: Sector) => ({
+      value: sector.id,
+      label: sector.name,
+    }));
+  }, [sectorsData]);
+
+  const onSubmit: SubmitHandler<ProfileFormInputs> = async ({ account_type, bio, sectors, matching_sectors }) => {
     try {
-      console.log({
-        account_type: 'PERSONAL',
+      // Ensure user ID is available before submission
+      if (!user?.id) {
+        toast.error('User ID is missing');
+        return;
+      }
+
+      const payload: CreateProfilePayload = {
+        id: user.id,
+        account_type: account_type.value as string,
         picture: 'https://via.placeholder.com/150',
-        nationality,
-        address,
         bio,
-        sectors: sectors.map(sector => sector.value),
-        matching_sectors: matching_sectors.map(sector => sector.value),
-        id: user?.id,
-      });
-      const res = await createUserProfile({
-        account_type: 'PERSONAL',
-        picture: 'https://via.placeholder.com/150',
-        nationality,
-        address,
-        bio,
-        sectors: sectors.map(sector => sector.value),
-        matching_sectors: matching_sectors.map(sector => sector.value),
-        id: user?.id,
-      }).unwrap();
+        sectors: sectors.map(sector => Number(sector.value)),
+        matching_sectors: matching_sectors.map(sector => Number(sector.value)),
+      };
+
+      console.log(payload);
+
+      const res = await createUserProfile(payload).unwrap();
 
       if (res.success) {
         toast.success(res?.message);
@@ -89,35 +89,31 @@ const CreateProfile: React.FC = () => {
             <h2 className='text-[2rem] font-bold'>Profile Info</h2>
 
             <form className='space-y-3' onSubmit={handleSubmit(onSubmit)}>
-              {/* Personal Info */}
-              <div className='space-y-2'>
-                <h2 className='text-md font-semibold'>Personal Info</h2>
-                <div>
-                  <Input
-                    id='nationality'
-                    type='text'
-                    {...register('nationality', { required: 'Nationality is required' })}
-                    placeholder='Nationality'
-                  />
-                  {errors.nationality && <p className='mt-2 text-sm text-red-600'>{errors.nationality.message}</p>}
-                </div>
-
-                <div>
-                  <Input
-                    id='address'
-                    type='text'
-                    {...register('address', { required: 'Address is required' })}
-                    placeholder='Address'
-                  />
-                  <small className='text-muted'>Enter the name of your address manually</small>
-                  {errors.address && <p className='mt-2 text-sm text-red-600'>{errors.address.message}</p>}
-                </div>
+              {/* Account Type Selection */}
+              <div className='space-y-2 mb-4'>
+                <label htmlFor='account_type' className='block text-sm font-medium text-gray-700'>
+                  Account Type
+                </label>
+                <Controller
+                  name='account_type'
+                  control={control}
+                  rules={{ required: 'Account type is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      id='account_type'
+                      options={accountTypeOptions}
+                      placeholder='Select account type'
+                      classNamePrefix='react-select'
+                      styles={customStyles}
+                    />
+                  )}
+                />
+                {errors.account_type && <p className='mt-2 text-sm text-red-600'>{errors.account_type.message}</p>}
               </div>
 
               {/* Professional Info */}
               <div className='space-y-3 pb-4'>
-                <h2 className='text-md font-semibold'>Professional Info</h2>
-
                 <div>
                   <Textarea
                     id='bio'
@@ -150,14 +146,11 @@ const CreateProfile: React.FC = () => {
                         {...field}
                         options={sectorOptions}
                         isMulti
+                        isLoading={isLoadingSectors}
                         placeholder='Select sectors'
                         className='mt-1'
                         classNamePrefix='react-select'
-                        styles={
-                          {
-                            // ... (existing styles remain the same)
-                          }
-                        }
+                        styles={customStyles}
                       />
                     )}
                   />
@@ -180,13 +173,10 @@ const CreateProfile: React.FC = () => {
                         {...field}
                         options={sectorOptions}
                         isMulti
+                        isLoading={isLoadingSectors}
                         placeholder='Select preferred sectors'
                         classNamePrefix='react-select'
-                        styles={
-                          {
-                            // ... (existing styles remain the same)
-                          }
-                        }
+                        styles={customStyles}
                       />
                     )}
                   />
@@ -197,7 +187,13 @@ const CreateProfile: React.FC = () => {
               </div>
 
               {/* Submit Button */}
-              <Button type='submit' className='w-full' isLoading={isLoading} loadingText='Submitting'>
+              <Button
+                type='submit'
+                className='w-full'
+                isLoading={isSubmitting}
+                loadingText='Submitting'
+                disabled={isLoadingSectors}
+              >
                 Submit
               </Button>
             </form>
