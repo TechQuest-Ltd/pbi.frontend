@@ -14,7 +14,7 @@ import Spinner from '../../components/Spinner';
 // Account type options
 const accountTypeOptions: SelectOption[] = [
   { value: 'PERSONAL', label: 'Personal' },
-  { value: 'COMPANY', label: 'Company' },
+  { value: 'BUSINESS', label: 'Business' },
 ];
 
 const CreateProfile: React.FC = () => {

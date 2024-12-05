@@ -22,7 +22,7 @@ const routes: RouteObject[] = [
   { path: '/account-creation-confirmation', element: <AccountCreatedConfirmationPage /> },
   { path: '/email-verification/:verificationToken', element: <EmailVerificationSuccessPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
-  { path: '/reset-password', element: <ResetPasswordPage /> },
+  { path: '/reset-password/:resetToken', element: <ResetPasswordPage /> },
   { path: '/connect', element: <ConnectPage /> },
   { path: '/collaborate', element: <CollaboratePage /> },
   { path: '/profession', element: <ProfessionPage /> },
