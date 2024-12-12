@@ -66,18 +66,25 @@ interface Sector {
   name: string;
 }
 
-interface CreateProfilePayload {
-  id?: string | number;
-  account_type: string;
-  picture: string;
-  bio: string;
-  sectors: number[];
-  matching_sectors: number[];
+interface SelectOption {
+  value: string;
+  label: string;
 }
 
 interface ProfileFormInputs {
   account_type: SelectOption;
   bio: string;
+  age: number;
   sectors: SelectOption[];
   matching_sectors: SelectOption[];
+}
+
+interface CreateProfilePayload {
+  id: string;
+  account_type: string;
+  picture: string;
+  bio: string;
+  age: number;
+  sectors: number[];
+  matching_sectors: number[];
 }

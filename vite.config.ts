@@ -9,4 +9,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/minio': {
+        target: 'https://pbi.minio.johnsonis.me',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/minio/, ''),
+      },
+    },
+  },
 });
