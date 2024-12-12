@@ -11,17 +11,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { handleError } from '@/lib/utils';
 import customStyles from '@/components/CustomCSSMultiSelect';
 import Spinner from '../../components/Spinner';
-import { Camera, Trash2 } from 'lucide-react';
-
-// Utility imports
-import {
-  createMinioClient,
-  uploadToMinio,
-  validateImageFile,
-  compressImageFile,
-  generateUniqueFileName,
-  readFileAsDataURL,
-} from '@/lib/utils';
+import { Camera, Trash2, Upload } from 'lucide-react';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 // Account type options
 const accountTypeOptions: SelectOption[] = [
@@ -29,10 +20,52 @@ const accountTypeOptions: SelectOption[] = [
   { value: 'BUSINESS', label: 'Business' },
 ];
 
+// Define interfaces
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface Sector {
+  id: number;
+  name: string;
+}
+
+interface ProfileFormInputs {
+  account_type: SelectOption;
+  bio: string;
+  age: number;
+  sectors: SelectOption[];
+  matching_sectors: SelectOption[];
+}
+
+interface CreateProfilePayload {
+  id: string;
+  account_type: string;
+  picture: string;
+  bio: string;
+  age: number;
+  sectors: number[];
+  matching_sectors: number[];
+}
+
+// MinIO S3 Client Configuration
+const s3Client = new S3Client({
+  endpoint: import.meta.env.VITE_MINIO_PUBLIC_URL,
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: import.meta.env.VITE_MINIO_ACCESS_KEY,
+    secretAccessKey: import.meta.env.VITE_MINIO_SECRET_KEY,
+  },
+  forcePathStyle: true,
+});
+
+const MINIO_BUCKET = import.meta.env.VITE_MINIO_BUCKET || 'profile-images';
 const DEFAULT_PROFILE_IMAGE = 'https://via.placeholder.com/150';
 
 const CreateProfile: React.FC = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
 
@@ -72,39 +105,62 @@ const CreateProfile: React.FC = () => {
     }));
   }, [sectorsData]);
 
+  // MinIO Image Upload Function
+  const uploadImageToMinIO = async (file: File): Promise<string> => {
+    setIsUploadingImage(true);
+    try {
+      // Generate unique filename
+      const fileName = `profile_${user?.id}_${Date.now()}${file.name.substring(file.name.lastIndexOf('.'))}`;
+
+      // Convert file to Uint8Array
+      const arrayBuffer = await file.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
+
+      // Upload file to MinIO
+      const uploadCommand = new PutObjectCommand({
+        Bucket: MINIO_BUCKET,
+        Key: fileName,
+        Body: uint8Array,
+        ContentType: file.type,
+      });
+
+      await s3Client.send(uploadCommand);
+
+      // Construct public URL
+      const imageUrl = `${import.meta.env.VITE_MINIO_PUBLIC_URL}/${MINIO_BUCKET}/${fileName}`;
+
+      return imageUrl;
+    } catch (error) {
+      console.error('MinIO Upload Error:', error);
+      toast.error('Failed to upload image');
+      throw error;
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
   // Handle image upload
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       try {
-        // Validate image
-        if (!validateImageFile(file)) {
-          return;
-        }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setProfileImage(reader.result as string);
+          setImageFile(file);
+        };
+        reader.readAsDataURL(file);
 
-        // Compress image
-        const compressedFile = await compressImageFile(file);
-
-        // Read for preview
-        const previewUrl = await readFileAsDataURL(compressedFile);
-        setProfileImage(previewUrl);
-
-        // Upload to MinIO
-        setIsUploadingImage(true);
-        const minioClient = createMinioClient();
-        const uniqueFileName = generateUniqueFileName(user?.id || 'unknown', compressedFile.name);
-
-        const uploadedUrl = await uploadToMinio(minioClient, compressedFile, uniqueFileName);
-
+        // Attempt to upload image and get URL
+        const uploadedUrl = await uploadImageToMinIO(file);
         setUploadedImageUrl(uploadedUrl);
         toast.success('Image uploaded successfully');
       } catch (error) {
         handleError(error);
         // Reset image states if upload fails
         setProfileImage(null);
+        setImageFile(null);
         setUploadedImageUrl(null);
-      } finally {
-        setIsUploadingImage(false);
       }
     }
   };
@@ -112,6 +168,7 @@ const CreateProfile: React.FC = () => {
   // Remove uploaded image
   const removeImage = () => {
     setProfileImage(null);
+    setImageFile(null);
     setUploadedImageUrl(null);
   };
 
@@ -164,10 +221,12 @@ const CreateProfile: React.FC = () => {
           <p className='text-[1.25rem]'>We would like to know you more</p>
         </div>
 
-        {/* Profile Picture Upload */}
+        {/* Form Section */}
         <div className='w-full lg:w-1/2 lg:max-w-md xl:ml-auto'>
           <div className='bg-white px-6 md:px-[2.5rem] py-8 rounded-lg shadow-sm space-y-6'>
             <h2 className='text-[2rem] font-bold'>Profile Info</h2>
+
+            {/* Profile Picture Upload */}
             <div className='flex justify-center mb-6'>
               <div className='relative'>
                 {profileImage ? (
@@ -190,6 +249,16 @@ const CreateProfile: React.FC = () => {
                           >
                             <Trash2 size={16} />
                           </button>
+                          {!uploadedImageUrl && (
+                            <button
+                              type='button'
+                              onClick={() => uploadImageToMinIO(imageFile!)}
+                              className='bg-blue-500 text-white rounded-full p-1 hover:bg-blue-600'
+                              title='Upload image'
+                            >
+                              <Upload size={16} />
+                            </button>
+                          )}
                         </>
                       )}
                     </div>
