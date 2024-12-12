@@ -165,183 +165,188 @@ const CreateProfile: React.FC = () => {
         </div>
 
         {/* Profile Picture Upload */}
-        <div className='flex justify-center mb-6'>
-          <div className='relative'>
-            {profileImage ? (
+        <div className='w-full lg:w-1/2 lg:max-w-md xl:ml-auto'>
+          <div className='bg-white px-6 md:px-[2.5rem] py-8 rounded-lg shadow-sm space-y-6'>
+            <h2 className='text-[2rem] font-bold'>Profile Info</h2>
+            <div className='flex justify-center mb-6'>
               <div className='relative'>
-                <img
-                  src={profileImage}
-                  alt='Profile'
-                  className='w-32 h-32 rounded-full object-cover border-4 border-gray-200'
+                {profileImage ? (
+                  <div className='relative'>
+                    <img
+                      src={profileImage}
+                      alt='Profile'
+                      className='w-32 h-32 rounded-full object-cover border-4 border-gray-200'
+                    />
+                    <div className='absolute bottom-0 right-0 flex space-x-2'>
+                      {isUploadingImage ? (
+                        <Spinner size={16} />
+                      ) : (
+                        <>
+                          <button
+                            type='button'
+                            onClick={removeImage}
+                            className='bg-red-500 text-white rounded-full p-1 hover:bg-red-600'
+                            title='Remove image'
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className='w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center'>
+                    <Camera size={32} className='text-gray-500' />
+                  </div>
+                )}
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleImageUpload}
+                  className='absolute inset-0 opacity-0 cursor-pointer'
+                  title='Upload profile picture'
+                  disabled={isUploadingImage}
                 />
-                <div className='absolute bottom-0 right-0 flex space-x-2'>
-                  {isUploadingImage ? (
-                    <Spinner size={16} />
-                  ) : (
-                    <>
-                      <button
-                        type='button'
-                        onClick={removeImage}
-                        className='bg-red-500 text-white rounded-full p-1 hover:bg-red-600'
-                        title='Remove image'
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </>
+              </div>
+            </div>
+
+            <form className='space-y-3' onSubmit={handleSubmit(onSubmit)}>
+              {/* Account Type Selection */}
+              <div className='space-y-2 mb-4'>
+                <label htmlFor='account_type' className='block text-sm font-medium text-gray-700'>
+                  Account Type
+                </label>
+                <Controller
+                  name='account_type'
+                  control={control}
+                  rules={{ required: 'Account type is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      id='account_type'
+                      options={accountTypeOptions}
+                      placeholder='Select account type'
+                      classNamePrefix='react-select'
+                      styles={customStyles}
+                    />
+                  )}
+                />
+                {errors.account_type && <p className='mt-2 text-sm text-red-600'>{errors.account_type.message}</p>}
+              </div>
+
+              {/* Age Input */}
+              <div className='space-y-2 mb-4'>
+                <label htmlFor='age' className='block text-sm font-medium text-gray-700'>
+                  Age
+                </label>
+                <Input
+                  id='age'
+                  type='number'
+                  min={18}
+                  max={100}
+                  {...register('age', {
+                    required: 'Age is required',
+                    min: {
+                      value: 18,
+                      message: 'You must be at least 18 years old',
+                    },
+                    max: {
+                      value: 100,
+                      message: 'Age cannot exceed 100',
+                    },
+                  })}
+                  placeholder='Enter your age'
+                />
+                {errors.age && <p className='mt-2 text-sm text-red-600'>{errors.age.message}</p>}
+              </div>
+
+              {/* Professional Info */}
+              <div className='space-y-3 pb-4'>
+                <div>
+                  <Textarea
+                    id='bio'
+                    {...register('bio', {
+                      required: 'Bio is required',
+                      maxLength: {
+                        value: 500,
+                        message: 'Bio cannot exceed 500 characters',
+                      },
+                    })}
+                    placeholder='Bio'
+                    rows={3}
+                  />
+                  {errors.bio && <p className='mt-2 text-sm text-red-600'>{errors.bio.message}</p>}
+                </div>
+
+                <div>
+                  <label htmlFor='sectors' className='block text-sm font-medium text-gray-700'>
+                    Sector/Industry
+                  </label>
+                  <Controller
+                    name='sectors'
+                    control={control}
+                    rules={{
+                      required: 'Please select at least one sector',
+                      validate: value => value.length > 0 || 'Please select at least one sector',
+                    }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={sectorOptions}
+                        isMulti
+                        isLoading={isLoadingSectors}
+                        placeholder='Select sectors'
+                        className='mt-1'
+                        classNamePrefix='react-select'
+                        styles={customStyles}
+                      />
+                    )}
+                  />
+                  {errors.sectors && <p className='mt-2 text-sm text-red-600'>{errors.sectors.message}</p>}
+                </div>
+
+                <div>
+                  <label htmlFor='matching_sectors' className='block text-sm font-medium text-gray-700'>
+                    Preferred Matching Sector
+                  </label>
+                  <Controller
+                    name='matching_sectors'
+                    control={control}
+                    rules={{
+                      required: 'Please select at least one preferred sector',
+                      validate: value => value.length > 0 || 'Please select at least one preferred sector',
+                    }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={sectorOptions}
+                        isMulti
+                        isLoading={isLoadingSectors}
+                        placeholder='Select preferred sectors'
+                        classNamePrefix='react-select'
+                        styles={customStyles}
+                      />
+                    )}
+                  />
+                  {errors.matching_sectors && (
+                    <p className='mt-2 text-sm text-red-600'>{errors.matching_sectors.message}</p>
                   )}
                 </div>
               </div>
-            ) : (
-              <div className='w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center'>
-                <Camera size={32} className='text-gray-500' />
-              </div>
-            )}
-            <input
-              type='file'
-              accept='image/*'
-              onChange={handleImageUpload}
-              className='absolute inset-0 opacity-0 cursor-pointer'
-              title='Upload profile picture'
-              disabled={isUploadingImage}
-            />
+
+              {/* Submit Button */}
+              <Button
+                type='submit'
+                className='w-full'
+                isLoading={isSubmitting}
+                loadingText='Submitting'
+                disabled={isLoadingSectors || isUploadingImage}
+              >
+                Submit
+              </Button>
+            </form>
           </div>
         </div>
-
-        <form className='space-y-3' onSubmit={handleSubmit(onSubmit)}>
-          {/* Account Type Selection */}
-          <div className='space-y-2 mb-4'>
-            <label htmlFor='account_type' className='block text-sm font-medium text-gray-700'>
-              Account Type
-            </label>
-            <Controller
-              name='account_type'
-              control={control}
-              rules={{ required: 'Account type is required' }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  id='account_type'
-                  options={accountTypeOptions}
-                  placeholder='Select account type'
-                  classNamePrefix='react-select'
-                  styles={customStyles}
-                />
-              )}
-            />
-            {errors.account_type && <p className='mt-2 text-sm text-red-600'>{errors.account_type.message}</p>}
-          </div>
-
-          {/* Age Input */}
-          <div className='space-y-2 mb-4'>
-            <label htmlFor='age' className='block text-sm font-medium text-gray-700'>
-              Age
-            </label>
-            <Input
-              id='age'
-              type='number'
-              min={18}
-              max={100}
-              {...register('age', {
-                required: 'Age is required',
-                min: {
-                  value: 18,
-                  message: 'You must be at least 18 years old',
-                },
-                max: {
-                  value: 100,
-                  message: 'Age cannot exceed 100',
-                },
-              })}
-              placeholder='Enter your age'
-            />
-            {errors.age && <p className='mt-2 text-sm text-red-600'>{errors.age.message}</p>}
-          </div>
-
-          {/* Professional Info */}
-          <div className='space-y-3 pb-4'>
-            <div>
-              <Textarea
-                id='bio'
-                {...register('bio', {
-                  required: 'Bio is required',
-                  maxLength: {
-                    value: 500,
-                    message: 'Bio cannot exceed 500 characters',
-                  },
-                })}
-                placeholder='Bio'
-                rows={3}
-              />
-              {errors.bio && <p className='mt-2 text-sm text-red-600'>{errors.bio.message}</p>}
-            </div>
-
-            <div>
-              <label htmlFor='sectors' className='block text-sm font-medium text-gray-700'>
-                Sector/Industry
-              </label>
-              <Controller
-                name='sectors'
-                control={control}
-                rules={{
-                  required: 'Please select at least one sector',
-                  validate: value => value.length > 0 || 'Please select at least one sector',
-                }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    options={sectorOptions}
-                    isMulti
-                    isLoading={isLoadingSectors}
-                    placeholder='Select sectors'
-                    className='mt-1'
-                    classNamePrefix='react-select'
-                    styles={customStyles}
-                  />
-                )}
-              />
-              {errors.sectors && <p className='mt-2 text-sm text-red-600'>{errors.sectors.message}</p>}
-            </div>
-
-            <div>
-              <label htmlFor='matching_sectors' className='block text-sm font-medium text-gray-700'>
-                Preferred Matching Sector
-              </label>
-              <Controller
-                name='matching_sectors'
-                control={control}
-                rules={{
-                  required: 'Please select at least one preferred sector',
-                  validate: value => value.length > 0 || 'Please select at least one preferred sector',
-                }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    options={sectorOptions}
-                    isMulti
-                    isLoading={isLoadingSectors}
-                    placeholder='Select preferred sectors'
-                    classNamePrefix='react-select'
-                    styles={customStyles}
-                  />
-                )}
-              />
-              {errors.matching_sectors && (
-                <p className='mt-2 text-sm text-red-600'>{errors.matching_sectors.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <Button
-            type='submit'
-            className='w-full'
-            isLoading={isSubmitting}
-            loadingText='Submitting'
-            disabled={isLoadingSectors || isUploadingImage}
-          >
-            Submit
-          </Button>
-        </form>
       </div>
     </div>
   );
